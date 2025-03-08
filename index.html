@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSONex - Visualizador de JSON Avançado</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/json.min.js"></script>
+    <script src="js/script.js" defer></script>
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/atom-one-dark.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Poppins:wght@300;400;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>JSONex</h1>
+            <p class="tagline">Visualizador de JSON interativo e poderoso</p>
+            <button class="theme-toggle" id="themeToggle">🌙</button>
+        </header>
+
+        <main>
+            <div class="card input-card">
+                <div class="card-header">
+                    <div class="card-title">Entrada JSON</div>
+                    <div>
+                        <button class="secondary" id="clearBtn">Limpar</button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="input-container">
+                        <textarea id="jsonInput"
+                            placeholder="Cole seu JSON aqui ou use os exemplos abaixo..."></textarea>
+                    </div>
+                    <div class="actions">
+                        <button id="formatBtn">✨ Formatar</button>
+                        <button id="compressBtn" class="secondary">📦 Comprimir</button>
+                        <button id="validateBtn" class="secondary">✓ Validar</button>
+                        <button id="shareBtn" class="secondary">🔗 Compartilhar</button>
+                    </div>
+
+                    <h3 style="margin-top: 1.5rem; margin-bottom: 0.5rem;">Exemplos</h3>
+                    <div class="sample-container">
+                        <div class="sample-item" data-sample="user">Usuário</div>
+                        <div class="sample-item" data-sample="product">Produto</div>
+                        <div class="sample-item" data-sample="config">Configuração</div>
+                        <div class="sample-item" data-sample="weather">Clima</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card output-card">
+                <div class="card-header">
+                    <div class="card-title">Visualização</div>
+                    <div class="tabs">
+                        <div class="tab active" data-tab="tree">Árvore</div>
+                        <div class="tab" data-tab="raw">Raw</div>
+                        <div class="tab" data-tab="highlight">Highlight</div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="search-bar">
+                        <span class="search-icon">🔍</span>
+                        <input type="text" class="search-input" id="searchInput" placeholder="Buscar no JSON...">
+                    </div>
+                    <div class="json-path" id="jsonPath">
+                        <span class="path-segment">root</span>
+                    </div>
+                    <div class="output-container">
+                        <button class="clipboard-btn" id="copyBtn" title="Copiar para área de transferência">📋</button>
+                        <div class="output-wrapper">
+                            <div class="tab-content active" id="treeView">
+                                <div class="tree-view" id="jsonTree"></div>
+                            </div>
+                            <div class="tab-content" id="rawView">
+                                <pre class="json-output" id="jsonRawOutput"></pre>
+                            </div>
+                            <div class="tab-content" id="highlightView">
+                                <pre
+                                    class="json-output"><code class="language-json" id="jsonHighlightOutput"></code></pre>
+                            </div>
+                        </div>
+                        <div class="loading-indicator" id="loadingIndicator">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+
+                    <div class="stats" id="jsonStats">
+                        <div class="stat-item">
+                            <span>Tamanho:</span>
+                            <span class="stat-value" id="jsonSize">0 bytes</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Nodes:</span>
+                            <span class="stat-value" id="jsonNodes">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Nível:</span>
+                            <span class="stat-value" id="jsonDepth">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <div class="notification" id="notification"></div>
+        <div class="dark-overlay" id="darkOverlay"></div>
+
+        <div class="modal" id="shareModal">
+            <div class="modal-header">
+                <div class="modal-title">Compartilhar JSON</div>
+                <button class="close-modal" id="closeShareModal">×</button>
+            </div>
+            <div class="modal-body">
+                <p style="margin-bottom: 1rem;">Link para compartilhar este JSON:</p>
+                <div style="position: relative;">
+                    <input type="text" id="shareLink" class="search-input" readonly style="padding-right: 100px;">
+                    <button id="copyShareLink"
+                        style="position: absolute; right: 0; top: 0; height: 100%; border-radius: 0 6px 6px 0;">Copiar</button>
+                </div>
+                <div style="margin-top: 1.5rem;">
+                    <p style="margin-bottom: 0.5rem;">Ou use este código QR:</p>
+                    <div id="qrCode" style="text-align: center; margin-top: 1rem;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>
